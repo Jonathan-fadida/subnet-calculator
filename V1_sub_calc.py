@@ -3,8 +3,7 @@ import math
 
 def octet_split(x: str) -> list :
     '''
-    this function takes string parameter (should be Ipv4) 
-    and return a list of every octet 
+    Splits an IPv4 address string into octets and returns a list of octets.
     '''
 
     octets = x.split('.')
@@ -12,7 +11,9 @@ def octet_split(x: str) -> list :
 
 
 def conv_ipv4_32bit(ipv4_add):    
-
+    '''
+    Converts an IPv4 address to a 32-bit binary representation.
+    '''
     list_ip=ipv4_add.split(".")
     ipv4_bits=0
     for octet in list_ip:
@@ -24,8 +25,7 @@ def conv_ipv4_32bit(ipv4_add):
 
 def bits_split(x):
     '''
-    this function splits a string into octets and returns 4 octets
-
+    Splits a 32-bit binary string into 4 octets and returns them.
     '''
     bits = x
     octet1=bits[0:8]
@@ -36,7 +36,9 @@ def bits_split(x):
 
 
 def conv_32bit_ipv4(x): 
-
+    '''
+    Converts a 32-bit binary string to an IPv4 address.
+    '''
     oc1,oc2,oc3,oc4 = bits_split(x)
     ip_addr=f"{int(oc1, base=2)}.{int(oc2, base=2)}.{int(oc3, base=2)}.{int(oc4, base=2)}"
     return ip_addr
@@ -45,8 +47,7 @@ def conv_32bit_ipv4(x):
 def prompt_ip():
 
     '''
-    This function prompts the user to enter IPv4 address 
-    and returns Ipv4 address as string variable
+    Prompts the user to enter an IPv4 address and returns the address along with its class and default CIDR.
     '''
 
     p = r'^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$'
@@ -82,6 +83,9 @@ def prompt_ip():
 
 
 def prompt_CIDR(dif_cidr):
+    '''
+    Prompts the user to enter a CIDR notation or leave it empty and returns the CIDR.
+    '''
     while True:
         try:
             CIDR_input = input("type CIDR or leave Empty(press Enter) : ")
@@ -108,6 +112,9 @@ def prompt_CIDR(dif_cidr):
 
 
 def prompt_chooice(cidr):
+    '''
+    Prompts the user to choose between calculating based on hosts or subnets and returns the choice along with the number of hosts/subnets.
+    '''
     available_addresses = 2 ** (32 - cidr)
     
     while True:
@@ -161,6 +168,9 @@ def prompt_chooice(cidr):
 
 
 def conv_cidr_mask(cidr):  
+    '''
+    Converts a CIDR notation to a subnet mask.
+    '''    
     bits_cidr = "1" * cidr + "0" * (32 - cidr)
     mask = conv_32bit_ipv4(bits_cidr)
     return mask
@@ -170,7 +180,9 @@ def conv_cidr_mask(cidr):
 
    
 def calc_bits_subnets_and_hosts(choice,amount,cidr):
-    
+    '''
+    Calculates the number of bits for subnets and hosts based on the user's choice and input.
+    '''    
     if choice == "subnets":
         bits_for_subnets = math.ceil(math.log2(amount))
         bits_for_hosts = 32 - cidr - bits_for_subnets
@@ -183,7 +195,9 @@ def calc_bits_subnets_and_hosts(choice,amount,cidr):
 
 
 def calc_2_first_last_subs(ip,cidr,bits_hosts):
-  
+    '''
+    Calculates the first and last subnets, as well as their broadcast addresses, based on the input IP, CIDR, and number of bits for hosts.
+    '''  
     
     hosts=2**bits_hosts
     
